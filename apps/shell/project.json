@@ -19,7 +19,8 @@
         "styles": ["apps/shell/src/styles.css"],
         "scripts": [],
         "isolatedConfig": true,
-        "webpackConfig": "apps/shell/webpack.config.js"
+        "webpackConfig": "apps/shell/webpack.config.js",
+        "postcssConfig": "apps/shell/postcss.config.js"
       },
       "configurations": {
         "development": {
@@ -85,6 +86,43 @@
         "ci": {
           "ci": true,
           "codeCoverage": true
+        }
+      }
+    },
+    "storybook": {
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "port": 4400,
+        "configDir": "apps/shell/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@nx/storybook:build",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook/shell",
+        "configDir": "apps/shell/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "static-storybook": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "shell:build-storybook",
+        "staticFilePath": "dist/storybook/shell"
+      },
+      "configurations": {
+        "ci": {
+          "buildTarget": "shell:build-storybook:ci"
         }
       }
     }
